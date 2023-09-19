@@ -21,7 +21,7 @@
       name: "flume-source-{{item}}"
       key_name: "vockey"
       instance_type: t2.micro
-      security_group: 
+      security_groups: 
         - flume-sg
         - hadoop-sg
       image_id: ami-051f7e7f6c2f40dc1
@@ -43,7 +43,7 @@
       name: "flume-sink"
       key_name: "vockey"
       instance_type: t3.large
-      security_group: 
+      security_groups: 
         - flume-sg
         - hadoop-sg
       image_id: ami-051f7e7f6c2f40dc1
