@@ -1,0 +1,42 @@
+---
+- hosts: flume_source
+  tasks:
+  - name: Install Java
+    ansible.builtin.command: sudo yum install -y java-1.8.0-amazon-corretto java-1.8.0-amazon-corretto-devel
+
+  - name: Set JAVA_HOME environment variable at ~/.bashrc
+    ansible.builtin.shell: echo 'export JAVA_HOME=/usr/lib/jvm/java' >> ~/.bashrc
+
+- hosts: all
+  tasks:
+  - name: Download Flume
+    ansible.builtin.get_url:
+      url: https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz
+      dest: /home/ec2-user
+
+  - name: Extract Flume
+    ansible.builtin.command: tar -xf /home/ec2-user/apache-flume-1.11.0-bin.tar.gz
+
+- hosts: flume_source
+  tasks:
+  - name: Copy flume-source.conf to source instances
+    ansible.builtin.copy:
+      src: flume-source/flume-source.conf
+      dest: /home/ec2-user/apache-flume-1.11.0-bin/flume-source.conf
+
+  - name: Create directory to store measurements
+    ansible.builtin.command: mkdir /home/ec2-user/input
+
+  - name: Copy flume.service file to source instances
+    ansible.builtin.copy:
+      src: flume-source/flume.service
+      dest: /tmp/flume.service
+
+  - name: Copy flume.service to the proper location
+    ansible.builtin.shell: sudo cp /tmp/flume.service /etc/systemd/system/flume.service
+
+  - name: Start Flume
+    ansible.builtin.shell: sudo systemctl start flume
+
+  - name: Set the service to start at init
+    ansible.builtin.shell: sudo systemctl enable flume

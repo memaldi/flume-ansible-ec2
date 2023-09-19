@@ -20,7 +20,7 @@
     amazon.aws.ec2_instance:
       name: "flume-source-{{item}}"
       key_name: "vockey"
-      instance_type: t2.micro
+      instance_type: t3.large
       security_groups: 
         - flume-sg
         - hadoop-sg
@@ -38,20 +38,20 @@
       - "2"
       - "3" 
 
-  - name: Start flume sink instance
-    amazon.aws.ec2_instance:
-      name: "flume-sink"
-      key_name: "vockey"
-      instance_type: t3.large
-      security_groups: 
-        - flume-sg
-        - hadoop-sg
-      image_id: ami-051f7e7f6c2f40dc1
-      region: us-east-1
-      tags:
-        Group: flume
-      volumes:
-      - device_name: /dev/sda1
-        ebs:
-          volume_size: 50
-          delete_on_termination: true
+  # - name: Start flume sink instance
+  #   amazon.aws.ec2_instance:
+  #     name: "flume-sink"
+  #     key_name: "vockey"
+  #     instance_type: t3.large
+  #     security_groups: 
+  #       - flume-sg
+  #       - hadoop-sg
+  #     image_id: ami-051f7e7f6c2f40dc1
+  #     region: us-east-1
+  #     tags:
+  #       Group: flume
+  #     volumes:
+  #     - device_name: /dev/sda1
+  #       ebs:
+  #         volume_size: 50
+  #         delete_on_termination: true
