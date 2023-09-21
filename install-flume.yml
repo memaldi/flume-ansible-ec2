@@ -40,3 +40,46 @@
 
   - name: Set the service to start at init
     ansible.builtin.shell: sudo systemctl enable flume
+
+  - name: Create random-events directory
+    ansible.builtin.command: mkdir /home/ec2-user/random-events
+
+  - name: Copy random-events.py
+    ansible.builtin.copy:
+      src: flume-source/random-events.py
+      dest: /home/ec2-user/random-events
+
+  - name: Copy requirements.txt
+    ansible.builtin.copy:
+      src: flume-source/requirements.txt
+      dest: /home/ec2-user/random-events
+
+  - name: Install python and pip
+    ansible.builtin.command: sudo yum install -y python python-pip
+
+  - name: Install requirements
+    ansible.builtin.command: pip install -r /home/ec2-user/random-events/requirements.txt
+
+- hosts: flume_sink
+  tasks:
+  - name: Create /weather/data directory on HDFS
+    ansible.builtin.shell: /home/ec2-user/hadoop-3.3.6/bin/hdfs dfs -mkdir -p /weather/data
+  
+  - name: Copy flume-sink.conf to sink instances
+    ansible.builtin.copy:
+      src: flume-sink/flume-sink.conf
+      dest: /home/ec2-user/apache-flume-1.11.0-bin/flume-sink.conf
+
+  - name: Copy flume.service file to sink instances
+    ansible.builtin.copy:
+      src: flume-sink/flume.service
+      dest: /tmp/flume.service
+
+  - name: Copy flume.service to the proper location
+    ansible.builtin.shell: sudo cp /tmp/flume.service /etc/systemd/system/flume.service
+
+  - name: Start Flume
+    ansible.builtin.shell: sudo systemctl start flume
+
+  - name: Set the service to start at init
+    ansible.builtin.shell: sudo systemctl enable flume

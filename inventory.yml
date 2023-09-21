@@ -1,8 +1,8 @@
 flume_source:
   hosts:
-    ec2-54-198-126-192.compute-1.amazonaws.com:
-    ec2-18-212-117-174.compute-1.amazonaws.com:
-    ec2-34-203-193-206.compute-1.amazonaws.com:
+    ec2-3-90-44-145.compute-1.amazonaws.com:
+    ec2-54-91-179-88.compute-1.amazonaws.com:
+    ec2-54-243-17-47.compute-1.amazonaws.com:
 flume_sink:
   hosts:
-    ec2-54-156-73-54.compute-1.amazonaws.com:
+    ec2-54-91-193-44.compute-1.amazonaws.com:
