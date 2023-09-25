@@ -70,6 +70,11 @@
       src: flume-sink/flume-sink.conf
       dest: /home/ec2-user/apache-flume-1.11.0-bin/flume-sink.conf
 
+  - name: Copy flume-env.sh to config folder
+    ansible.builtin.copy:
+      src: flume-sink/flume-env.sh
+      dest: /home/ec2-user/apache-flume-1.11.0-bin/conf/flume-env.sh
+
   - name: Copy flume.service file to sink instances
     ansible.builtin.copy:
       src: flume-sink/flume.service
